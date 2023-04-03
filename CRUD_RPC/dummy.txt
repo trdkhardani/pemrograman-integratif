@@ -1,0 +1,15 @@
+{
+    "id": 1,
+    "title": "Lorem Ipsum Dolor!",
+    "category": "Lorem",
+    "slug": "lorem-ipsum-dolor",
+    "body": "Lorem ipsum dolor sit amet consectur"
+}
+
+{
+    "id": 1,
+    "title": "Lorem Ipsum!",
+    "category": "Misc",
+    "slug": "lorem-ipsum",
+    "body": "Lorem ipsum dolor sit amet consectur"
+}

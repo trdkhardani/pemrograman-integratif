@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package data;
+
+service PostData {
+    rpc CreatePost (Post) returns (Post) {}
+    rpc ReadPost (PostRequest) returns (Post) {}
+    rpc UpdatePost (Post) returns (Post) {}
+    rpc DeletePost (PostRequest) returns (Post) {}
+}
+
+message Post {
+    int32 id = 1;
+    string title = 2;
+    string category = 3;
+    string slug = 4;
+    string body = 5;
+}
+
+message PostRequest {
+    int32 id = 1;
+}
