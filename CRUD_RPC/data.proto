@@ -5,6 +5,7 @@ package data;
 service PostData {
     rpc CreatePost (Post) returns (Post) {}
     rpc ReadPost (PostRequest) returns (Post) {}
+    rpc ReadAllPost (Empty) returns (PostList) {}
     rpc UpdatePost (Post) returns (Post) {}
     rpc DeletePost (PostRequest) returns (Post) {}
 }
@@ -16,6 +17,12 @@ message Post {
     string slug = 4;
     string body = 5;
 }
+
+message PostList{
+    repeated Post post = 1;
+}
+
+message Empty{}
 
 message PostRequest {
     int32 id = 1;

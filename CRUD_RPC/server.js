@@ -1,13 +1,14 @@
 import grpc from "@grpc/grpc-js";
 import protoLoader from "@grpc/proto-loader";
-import mysql from "mysql";
 import sql from "./database.js";
-import { sqlCreate, sqlRead, sqlUpdate, sqlDelete } from "./database.js";
+import { sqlCreate, sqlRead, sqlUpdate, sqlDelete, sqlReadAll } from "./database.js";
 
 const PROTO_PATH = "./data.proto";
 const packageDefinition = protoLoader.loadSync(PROTO_PATH);
 const grpcObject = grpc.loadPackageDefinition(packageDefinition);
 const postData = grpcObject.data.PostData;
+
+const client = new postData("localhost:50051", grpc.credentials.createInsecure());
 
 function createPost(call, callback) {
   const post = call.request;
@@ -30,6 +31,33 @@ function readPost(call, callback) {
     const post = results[0];
     callback(null, post);
     console.log("Read post with id: " + post.id)
+  });
+}
+
+function readAllPost(call, callback) {
+  sql.query(sqlReadAll, (err, results) => {
+    if (err) throw err;
+
+    const posts = results.map((row) => {
+      const post = {
+        id: row.id,
+        title: row.title,
+        category: row.category,
+        slug: row.slug,
+        body: row.body,
+      };
+      return post;
+    });
+
+    const response = {
+      post: posts,
+    };
+
+    const listPosts = {
+      post: posts,
+    };
+
+    callback(null, listPosts);
   });
 }
 
@@ -63,6 +91,7 @@ function _grpc() {
   server.addService(postData.service, {
     CreatePost: createPost,
     ReadPost: readPost,
+    ReadAllPost: readAllPost,
     UpdatePost: updatePost,
     DeletePost: deletePost,
   });
